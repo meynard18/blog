@@ -1,4 +1,4 @@
-import { Schema, model, Document } from 'mongoose';
+import { Schema, model } from 'mongoose';
 
 interface User {
    email: string;
@@ -24,6 +24,6 @@ const userSchema = new Schema<User>({
    },
 });
 
-const UserModel = model<UserDocument>('User', userSchema);
+const UserModel = model<User>('User', userSchema);
 
 export default UserModel;
