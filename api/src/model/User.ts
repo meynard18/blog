@@ -1,9 +1,12 @@
 import { Schema, model } from 'mongoose';
+import jwt from 'jsonwebtoken';
 
 interface User {
    email: string;
    password: string;
    confirmPassword: string;
+   tokens: { token: string }[];
+   generateAuthToken: () => Promise<string>;
 }
 
 const userSchema = new Schema<User>({
@@ -22,7 +25,23 @@ const userSchema = new Schema<User>({
       type: String,
       required: true,
    },
+   tokens: [
+      {
+         token: {
+            type: String,
+            required: true,
+         },
+      },
+   ],
 });
+
+userSchema.methods.generateAuthToken = async function () {
+   const user = this;
+   const token = jwt.sign({ _id: user._id }, 'your_secret_key');
+   user.tokens.push({ token }); // Store the generated token
+   await user.save(); // Save the updated user document
+   return token;
+};
 
 const UserModel = model<User>('User', userSchema);
 
