@@ -1,5 +1,6 @@
 import express from 'express';
 import UserModel from '../model/User.js'; // Import the User model we defined
+import bcrypt from 'bcrypt';
 const router = express.Router();
 router.post('/users', async (req, res) => {
     try {
@@ -8,14 +9,19 @@ router.post('/users', async (req, res) => {
         if (password !== confirmPassword) {
             return res.status(400).json({ error: 'Passwords do not match' });
         }
+        const hashedPassword = await bcrypt.hash(password, 10); // 10 is the number of salt rounds
         // Create a new user instance
-        const newUser = new UserModel({ email, password, confirmPassword });
+        const newUser = new UserModel({
+            email,
+            password: hashedPassword,
+            confirmPassword: hashedPassword,
+        });
         // Save the user to the database
         const savedUser = await newUser.save();
-        res.status(201).json(savedUser);
+        res.status(201).send(savedUser);
     }
     catch (error) {
-        res.status(500).json(error);
+        res.status(500).send(error);
     }
 });
 router.get('/users/:id', async (req, res) => {
