@@ -52,3 +52,16 @@
 .loginForm > button:hover {
    cursor: pointer;
 }
+
+.card-body {
+   border: 1px solid lightslategrey;
+   width: max-content;
+}
+.blog-page-title {
+   text-align: center;
+}
+.blogs-list {
+   gap: 2rem;
+   display: flex;
+   justify-content: center;
+}
