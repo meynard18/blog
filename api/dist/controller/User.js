@@ -40,6 +40,9 @@ const readUser = async (req, res) => {
         res.status(500).send({ error: 'Internal server error' });
     }
 };
+const readProfile = async (req, res) => {
+    res.send(req.user);
+};
 const updateUser = async (req, res) => {
     try {
         const userId = req.params.id;
@@ -94,5 +97,5 @@ const logInUser = async (req, res) => {
         return res.status(500).send({ error, message: `Internal server error` });
     }
 };
-export default { createUser, readUser, updateUser, logInUser };
+export default { createUser, readUser, updateUser, logInUser, readProfile };
 //# sourceMappingURL=User.js.map

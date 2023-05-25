@@ -1,6 +1,11 @@
 import bcrypt from 'bcrypt';
 import UserModel from '../model/User.js';
 import { Request, Response } from 'express';
+import { Document } from 'mongoose';
+
+interface AuthenticatedRequest extends Request {
+   user?: Document;
+}
 
 const createUser = async (req: Request, res: Response) => {
    try {
@@ -49,6 +54,10 @@ const readUser = async (req: Request, res: Response) => {
       console.error(error);
       res.status(500).send({ error: 'Internal server error' });
    }
+};
+
+const readProfile = async (req: AuthenticatedRequest, res: Response) => {
+   res.send(req.user);
 };
 
 const updateUser = async (req: Request, res: Response) => {
@@ -122,4 +131,4 @@ const logInUser = async (req: Request, res: Response) => {
    }
 };
 
-export default { createUser, readUser, updateUser, logInUser };
+export default { createUser, readUser, updateUser, logInUser, readProfile };
