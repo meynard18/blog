@@ -1,14 +1,14 @@
 import BlogModel from '../model/Blog.js';
 import { Request, Response } from 'express';
 import { Document } from 'mongoose';
-import UserModel from '../model/User.js';
-import { UserDto } from '../dtos/user.dto.js';
 
 interface AuthenticatedRequest extends Request {
-   user?: Document;
+   user?: {
+      email: string;
+   };
 }
 
-const createBlog = async (req: Request, res: Response) => {
+const createBlog = async (req: AuthenticatedRequest, res: Response) => {
    try {
       const {
          authorFirstName,
@@ -20,13 +20,8 @@ const createBlog = async (req: Request, res: Response) => {
          image,
       } = req.body;
 
-      // check if user is authenticated
-      if (!req.user) {
-         return res.redirect('/userLogin');
-      }
-
       // check if authenticated user email matches provided email
-      if (req.user.email !== authorEmail) {
+      if (req.user?.email !== authorEmail) {
          // Unauthorized access, email doesn't match
          return res
             .status(401)

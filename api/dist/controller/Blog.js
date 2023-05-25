@@ -2,12 +2,8 @@ import BlogModel from '../model/Blog.js';
 const createBlog = async (req, res) => {
     try {
         const { authorFirstName, authorLastName, authorEmail, authorPhoneNumber, title, content, image, } = req.body;
-        // check if user is authenticated
-        if (!req.user) {
-            return res.redirect('/userLogin');
-        }
         // check if authenticated user email matches provided email
-        if (req.user.email !== authorEmail) {
+        if (req.user?.email !== authorEmail) {
             // Unauthorized access, email doesn't match
             return res
                 .status(401)
