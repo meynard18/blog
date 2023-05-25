@@ -15,13 +15,6 @@ interface Blog {
    __v: number;
 }
 
-interface CardProp {
-   author: string;
-   title: string;
-   content: string;
-   image: string;
-}
-
 interface CardBlogProps {
    blogs: Blog[];
 }

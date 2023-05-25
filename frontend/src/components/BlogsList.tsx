@@ -1,20 +1,5 @@
 import CardBlog from './CardBlog';
-interface Author {
-   firstName: string;
-   lastName: string;
-   email: string;
-   phoneNumber: string;
-   _id: string;
-}
-
-interface Blog {
-   author: Author;
-   title: string;
-   content: string;
-   image: string;
-   _id: string;
-   __v: number;
-}
+import { Blog } from '../models/blog.model';
 
 const blogs: Blog[] = [
    {
