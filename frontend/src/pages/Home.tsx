@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { FormDdata } from '../models/form.model';
+import { FormData } from '../models/form.model';
 
 const Home = () => {
-   const [input, setInput] = useState<FormDdata>({
+   const [input, setInput] = useState<FormData>({
       email: '',
       password: '',
    });

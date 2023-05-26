@@ -4,6 +4,7 @@ import SignUp from './pages/SignUp';
 import CreateBlog from './pages/CreateBlog';
 import Blogs from './pages/Blogs';
 import Navbar from './components/Nav';
+import ProtectedRoute from './utils/PrivateRoutes';
 
 function App() {
    return (
@@ -12,7 +13,9 @@ function App() {
          <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/signUp" element={<SignUp />} />
-            <Route path="/createBlog" element={<CreateBlog />} />
+            <Route element={<ProtectedRoute />}>
+               <Route path="/createBlog" element={<CreateBlog />} />
+            </Route>
             <Route path="/blogs" element={<Blogs />} />
          </Routes>
       </Router>

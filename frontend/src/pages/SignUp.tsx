@@ -1,8 +1,13 @@
 import { useState } from 'react';
-import { FormDdata } from '../models/form.model';
+import { FormData } from '../models/form.model';
+import { useDispatch } from 'react-redux';
+import { createUser } from '../features/users/usersSlice';
+import { Dispatch } from '@reduxjs/toolkit';
 
 const SignUp = () => {
-   const [input, setInput] = useState<FormDdata>({
+   const dispatch: Dispatch = useDispatch();
+
+   const [input, setInput] = useState<FormData>({
       email: '',
       password: '',
       confirmPassword: '',
@@ -11,12 +16,17 @@ const SignUp = () => {
    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       const { name, value } = e.target;
       setInput((prev) => ({ ...prev, [name]: value }));
-      console.log(input);
+   };
+
+   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      console.log('hi there');
+      dispatch(createUser(input));
    };
    return (
       <div className="signUpPage">
          <h2>Sign Up</h2>
-         <form action="" className="loginForm">
+         <form action="" className="loginForm" onSubmit={handleSubmit}>
             <input
                type="text"
                placeholder="Email Address"

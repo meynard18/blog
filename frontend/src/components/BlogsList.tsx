@@ -27,7 +27,7 @@ const blogs: Blog[] = [
       title: 'My Blog Post',
       content: 'This is the content of my blog post.',
       image: 'https://loremflickr.com/320/240',
-      _id: '646eb0db388a8bbbfcbc7ea1',
+      _id: '646eb0db388a8bbbfcbc7ea2',
       __v: 0,
    },
    {
@@ -41,7 +41,7 @@ const blogs: Blog[] = [
       title: 'My Blog Post',
       content: 'This is the content of my blog post.',
       image: 'https://loremflickr.com/320/240',
-      _id: '646eb0db388a8bbbfcbc7ea1',
+      _id: '646eb0db388a8bbbfcbc7ea3',
       __v: 0,
    },
 ];

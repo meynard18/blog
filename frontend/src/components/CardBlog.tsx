@@ -23,7 +23,7 @@ const CardBlog: React.FC<CardBlogProps> = ({ blogs }) => {
    return (
       <div className="blogs-list">
          {blogs.map((blog) => (
-            <div className="card-body">
+            <div className="card-body" key={blog._id}>
                {' '}
                <img src={blog.image} />
                <h2>{blog.title}</h2>
