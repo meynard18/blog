@@ -4,10 +4,9 @@ import authenticate from '../middleware/auth.js';
 
 const router = express.Router();
 
-router.post('/users', UserController.createUser);
-router.get('/users/me', authenticate, UserController.readProfile);
-router.get('/users/:id', UserController.readUser);
-router.patch('/users/:id', UserController.updateUser);
-router.post('/userLogin', UserController.logInUser);
+router.post('/user/create', UserController.createUser);
+router.get('/user/me', authenticate, UserController.readProfile);
+router.patch('/user/update/:id', UserController.updateUser);
+router.post('/user/login', authenticate, UserController.logInUser);
 
 export default router;

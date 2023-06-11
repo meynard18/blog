@@ -1,38 +1,23 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import axios from 'axios';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { FormData } from '../../models/form.model';
 import { RootState } from '../../app/store';
+import { createUser, logInUser } from './usersAction';
 
 interface UserState {
    loading: boolean;
    error: string | null;
    user: FormData | null;
+   loggedIn: boolean;
+   token: string | null;
 }
 
 const initialState: UserState = {
    loading: false,
    error: null,
    user: null,
+   token: null,
+   loggedIn: false,
 };
-
-export const createUser = createAsyncThunk(
-   'user/createUser',
-   async (formData: FormData, { rejectWithValue }) => {
-      try {
-         const response = await axios.post(
-            'http://localhost:9090/users',
-            formData
-         );
-         return response.data;
-      } catch (error: any) {
-         //  return rejectWithValue(error.response.data);
-         if (error.response && error.response.data) {
-            return rejectWithValue(error.response.data);
-         }
-         return rejectWithValue('An error occurred.');
-      }
-   }
-);
 
 const userSlice = createSlice({
    name: 'user',
@@ -61,5 +46,6 @@ const userSlice = createSlice({
 export const selectUser = (state: RootState) => state.users.user;
 export const selectLoading = (state: RootState) => state.users.loading;
 export const selectError = (state: RootState) => state.users.error;
+export const selectLoggedIn = (state: RootState) => state.users.loggedIn;
 
 export default userSlice.reducer;

@@ -1,10 +1,9 @@
 import bcrypt from 'bcrypt';
-import UserModel from '../model/User.js';
+import UserModel from '../model/User/User.model.js';
 import { Request, Response } from 'express';
-import { Document } from 'mongoose';
 
 interface AuthenticatedRequest extends Request {
-   user?: Document;
+   user?: string;
 }
 
 const createUser = async (req: Request, res: Response) => {
@@ -34,25 +33,6 @@ const createUser = async (req: Request, res: Response) => {
       res.status(201).send({ user: savedUser, token });
    } catch (error) {
       res.status(500).send(error);
-   }
-};
-
-const readUser = async (req: Request, res: Response) => {
-   try {
-      const userId = req.params.id;
-
-      // Find the user by ID in the database
-      const user = await UserModel.findById(userId);
-
-      // If the user is not found, return a 404 response
-      if (!user) {
-         return res.status(404).send({ error: 'User not found' });
-      }
-
-      res.status(200).send(user);
-   } catch (error) {
-      console.error(error);
-      res.status(500).send({ error: 'Internal server error' });
    }
 };
 
@@ -123,7 +103,6 @@ const logInUser = async (req: Request, res: Response) => {
 
       // Generate the JWT token
       const token = await user.generateAuthToken();
-
       // Return the token as the response
       return res.status(200).send({ user, token });
    } catch (error) {
@@ -131,4 +110,4 @@ const logInUser = async (req: Request, res: Response) => {
    }
 };
 
-export default { createUser, readUser, updateUser, logInUser, readProfile };
+export default { createUser, updateUser, logInUser, readProfile };

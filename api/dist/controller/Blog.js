@@ -1,17 +1,18 @@
-import BlogModel from '../model/Blog.js';
+import BlogModel from '../model/Blog/Blog.model.js';
 const createBlog = async (req, res) => {
     try {
-        const { authorFirstName, authorLastName, authorEmail, authorPhoneNumber, title, content, image, } = req.body;
+        const { authorId = req.user?.id, authorFirstName, authorLastName, authorEmail, authorPhoneNumber, title, content, image, } = req.body;
         // check if authenticated user email matches provided email
-        if (req.user?.email !== authorEmail) {
+        if (req.user?.id !== authorId) {
             // Unauthorized access, email doesn't match
-            return res
-                .status(401)
-                .send({ error: `Email on file doesn't match provided email ` });
+            return res.status(401).send({
+                error: `Email on file doesn't match provided email`,
+            });
         }
         // Create a new blog post
         const newBlog = new BlogModel({
             author: {
+                authorId,
                 firstName: authorFirstName,
                 lastName: authorLastName,
                 email: authorEmail,
@@ -21,14 +22,40 @@ const createBlog = async (req, res) => {
             content,
             image,
         });
+        console.log(authorEmail, authorId);
         // Save the new blog post to the database
         const savedBlog = await newBlog.save();
-        res.status(201).json(savedBlog);
+        res.status(201).send(savedBlog);
     }
     catch (error) {
         console.error(error);
         res.status(500).send(error);
     }
 };
-export default { createBlog };
+const updateBlog = async (req, res) => {
+    try {
+        const blogId = req.params.id;
+        const { title, content, image, authorId = req.user?.id } = req.body;
+        const blog = await BlogModel.findById(blogId);
+        if (!blog) {
+            return res.status(404).send({ error: 'Blog not found' });
+        }
+        console.log(blog?.author.authorId);
+        console.log(authorId);
+        if (blog?.author.authorId !== authorId) {
+            throw new Error();
+        }
+        const updatedBlogPost = await BlogModel.findByIdAndUpdate(blogId, {
+            title: title,
+            content: content,
+            image: image,
+        }, { new: true });
+        console.log(updatedBlogPost);
+        res.status(200).send(updatedBlogPost);
+    }
+    catch (error) {
+        res.send({ error: 'Unauthorized' });
+    }
+};
+export default { createBlog, updateBlog };
 //# sourceMappingURL=Blog.js.map

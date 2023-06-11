@@ -1,4 +1,5 @@
-import mongoose, { Schema, Document } from 'mongoose';
+import mongoose, { Schema, Types } from 'mongoose';
+import { Blog } from './blog.interface.js';
 
 // Define the Author sub-schema
 const authorSchema = new Schema({
@@ -6,22 +7,12 @@ const authorSchema = new Schema({
    lastName: { type: String, required: true },
    email: { type: String, required: true },
    phoneNumber: { type: String },
+   authorId: { type: String, required: true },
 });
 
 // Define the Blog schema
-interface BlogDocument {
-   author: {
-      firstName: string;
-      lastName: string;
-      email: string;
-      phoneNumber?: string;
-   };
-   title: string;
-   content: string;
-   image: string;
-}
 
-const blogSchema = new Schema<BlogDocument>({
+const blogSchema = new Schema<Blog>({
    author: {
       type: authorSchema,
       required: true,
@@ -31,6 +22,6 @@ const blogSchema = new Schema<BlogDocument>({
    image: { type: String, required: true },
 });
 
-const BlogModel = mongoose.model<BlogDocument>('Blog', blogSchema);
+const BlogModel = mongoose.model<Blog>('Blog', blogSchema);
 
 export default BlogModel;

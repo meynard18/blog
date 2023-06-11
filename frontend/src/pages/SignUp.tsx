@@ -1,11 +1,17 @@
 import { useState } from 'react';
 import { FormData } from '../models/form.model';
 import { useDispatch } from 'react-redux';
-import { createUser } from '../features/users/usersSlice';
-import { Dispatch } from '@reduxjs/toolkit';
+import { createUser } from '../features/users/usersAction';
+import { Action } from 'redux';
+import { ThunkDispatch } from 'redux-thunk';
+import { RootState } from '../app/store';
 
 const SignUp = () => {
-   const dispatch: Dispatch = useDispatch();
+   const dispatch: ThunkDispatch<
+      RootState,
+      unknown,
+      Action<string>
+   > = useDispatch();
 
    const [input, setInput] = useState<FormData>({
       email: '',
@@ -20,7 +26,6 @@ const SignUp = () => {
 
    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-      console.log('hi there');
       dispatch(createUser(input));
    };
    return (
@@ -50,7 +55,7 @@ const SignUp = () => {
                name="confirmPassword"
             />
             <br />
-            <button type="submit">Login</button>
+            <button type="submit">Sign Up</button>
          </form>
       </div>
    );
