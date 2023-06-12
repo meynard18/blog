@@ -51,6 +51,22 @@ const createBlog = async (req: AuthenticatedRequest, res: Response) => {
    }
 };
 
+const readBlogs = async (req: AuthenticatedRequest, res: Response) => {
+   const id = req.user?.id;
+
+   try {
+      const blogs = await BlogModel.find({ 'author.authorId': id });
+
+      if (blogs.length === 0) {
+         return res.status(404).send();
+      }
+
+      res.send(blogs);
+   } catch (error) {
+      res.send(500).send();
+   }
+};
+
 const updateBlog = async (req: AuthenticatedRequest, res: Response) => {
    try {
       const blogId = req.params.id;
@@ -73,6 +89,7 @@ const updateBlog = async (req: AuthenticatedRequest, res: Response) => {
             content: content,
             image: image,
          },
+
          { new: true }
       );
 
@@ -102,22 +119,6 @@ const deleteBlog = async (req: AuthenticatedRequest, res: Response) => {
       res.status(200).send({ message: 'Blog deleted Successfully!' });
    } catch (error) {
       res.send({ error: 'Unauthorized' });
-   }
-};
-
-const readBlogs = async (req: AuthenticatedRequest, res: Response) => {
-   const id = req.user?.id;
-
-   try {
-      const blogs = await BlogModel.find({ 'author.authorId': id });
-
-      if (!blogs) {
-         return res.status(404).send();
-      }
-
-      res.send(blogs);
-   } catch (error) {
-      res.send(500).send();
    }
 };
 

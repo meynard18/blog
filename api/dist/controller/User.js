@@ -1,5 +1,6 @@
 import bcrypt from 'bcrypt';
 import UserModel from '../model/User/User.model.js';
+import BlogModel from '../model/Blog/Blog.model.js';
 const createUser = async (req, res) => {
     try {
         const { email, password, confirmPassword } = req.body;
@@ -58,6 +59,22 @@ const updateUser = async (req, res) => {
         res.status(500).send(error);
     }
 };
+const deleteUser = async (req, res) => {
+    const userId = req.user?.id;
+    try {
+        const removedUser = await UserModel.findByIdAndDelete(userId);
+        if (!removedUser) {
+            return res.status(404).send({ error: 'User Profile not found!' });
+        }
+        await BlogModel.deleteMany({ 'author.authorId': userId });
+        res.status(200).send({
+            message: 'User profile and post by this user successfully deleted',
+        });
+    }
+    catch (error) {
+        res.status(500).send(error);
+    }
+};
 const logInUser = async (req, res) => {
     const { email, password } = req.body;
     try {
@@ -81,5 +98,5 @@ const logInUser = async (req, res) => {
         return res.status(500).send({ error, message: `Internal server error` });
     }
 };
-export default { createUser, updateUser, logInUser, readProfile };
+export default { createUser, readProfile, updateUser, deleteUser, logInUser };
 //# sourceMappingURL=User.js.map

@@ -30,6 +30,19 @@ const createBlog = async (req, res) => {
         res.status(500).send(error);
     }
 };
+const readBlogs = async (req, res) => {
+    const id = req.user?.id;
+    try {
+        const blogs = await BlogModel.find({ 'author.authorId': id });
+        if (blogs.length === 0) {
+            return res.status(404).send();
+        }
+        res.send(blogs);
+    }
+    catch (error) {
+        res.send(500).send();
+    }
+};
 const updateBlog = async (req, res) => {
     try {
         const blogId = req.params.id;
@@ -68,19 +81,6 @@ const deleteBlog = async (req, res) => {
     }
     catch (error) {
         res.send({ error: 'Unauthorized' });
-    }
-};
-const readBlogs = async (req, res) => {
-    const id = req.user?.id;
-    try {
-        const blogs = await BlogModel.find({ 'author.authorId': id });
-        if (!blogs) {
-            return res.status(404).send();
-        }
-        res.send(blogs);
-    }
-    catch (error) {
-        res.send(500).send();
     }
 };
 export default { createBlog, updateBlog, deleteBlog, readBlogs };
