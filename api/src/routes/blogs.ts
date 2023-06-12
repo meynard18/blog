@@ -5,7 +5,8 @@ import authenticate from '../middleware/auth.js';
 const router = express.Router();
 
 router.post('/blog/create', authenticate, BlogController.createBlog);
+router.get('/blog/read-blogs', authenticate, BlogController.readBlogs);
 router.patch('/blog/update-blog/:id', authenticate, BlogController.updateBlog);
-// router.get('/blogs/:email', BlogController.readBlogs);
+router.delete('/blog/delete-blog/:id', authenticate, BlogController.deleteBlog);
 
 export default router;

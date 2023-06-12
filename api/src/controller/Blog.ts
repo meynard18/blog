@@ -42,13 +42,11 @@ const createBlog = async (req: AuthenticatedRequest, res: Response) => {
          content,
          image,
       });
-      console.log(authorEmail, authorId);
       // Save the new blog post to the database
       const savedBlog = await newBlog.save();
 
       res.status(201).send(savedBlog);
    } catch (error) {
-      console.error(error);
       res.status(500).send(error);
    }
 };
@@ -63,8 +61,6 @@ const updateBlog = async (req: AuthenticatedRequest, res: Response) => {
       if (!blog) {
          return res.status(404).send({ error: 'Blog not found' });
       }
-      console.log(blog?.author.authorId);
-      console.log(authorId);
 
       if (blog?.author.authorId !== authorId) {
          throw new Error();
@@ -79,11 +75,50 @@ const updateBlog = async (req: AuthenticatedRequest, res: Response) => {
          },
          { new: true }
       );
-      console.log(updatedBlogPost);
+
       res.status(200).send(updatedBlogPost);
    } catch (error) {
       res.send({ error: 'Unauthorized' });
    }
 };
 
-export default { createBlog, updateBlog };
+const deleteBlog = async (req: AuthenticatedRequest, res: Response) => {
+   try {
+      const blogId = req.params.id;
+      const authorId = req.user?.id;
+
+      const blog = await BlogModel.findById(blogId);
+
+      if (!blog) {
+         return res.status(404).send({ error: 'Blog not found' });
+      }
+
+      if (blog?.author.authorId !== authorId) {
+         throw new Error();
+      }
+
+      await BlogModel.findByIdAndDelete(blogId);
+
+      res.status(200).send({ message: 'Blog deleted Successfully!' });
+   } catch (error) {
+      res.send({ error: 'Unauthorized' });
+   }
+};
+
+const readBlogs = async (req: AuthenticatedRequest, res: Response) => {
+   const id = req.user?.id;
+
+   try {
+      const blogs = await BlogModel.find({ 'author.authorId': id });
+
+      if (!blogs) {
+         return res.status(404).send();
+      }
+
+      res.send(blogs);
+   } catch (error) {
+      res.send(500).send();
+   }
+};
+
+export default { createBlog, updateBlog, deleteBlog, readBlogs };

@@ -1,12 +1,5 @@
 import { Schema, model } from 'mongoose';
 import jwt from 'jsonwebtoken';
-// interface User {
-//    email: string;
-//    password: string;
-//    confirmPassword: string;
-//    tokens: { token: string }[];
-//    generateAuthToken: () => Promise<string>;
-// }
 const userSchema = new Schema({
     email: {
         type: String,

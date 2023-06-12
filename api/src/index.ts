@@ -44,11 +44,13 @@ const startServer = () => {
    });
 
    const testBlog = async () => {
-      const blog = await BlogModel.findById('648654af3eeda2af0f2980b8');
+      const blog = await BlogModel.findById('648678a5aac590dbbb447a81');
       // await blog?.populate('author').execPopulate();
       // console.log(blog?.author.authorId);
 
       // console.log(blog?.author?.authorId);
+
+      // console.log(blog);
    };
    testBlog();
 };
