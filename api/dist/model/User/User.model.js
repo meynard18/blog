@@ -1,5 +1,6 @@
 import { Schema, model } from 'mongoose';
 import jwt from 'jsonwebtoken';
+import bcrypt from 'bcrypt';
 const userSchema = new Schema({
     email: {
         type: String,
@@ -32,6 +33,21 @@ userSchema.methods.generateAuthToken = async function () {
     await user.save(); // Save the updated user document
     return token;
 };
+userSchema.pre('save', async function (next) {
+    const user = this;
+    if (!user.isModified('password')) {
+        return next();
+    }
+    try {
+        const hashedPassword = await bcrypt.hash(user.password, 8); // 8 is the number of salt rounds
+        user.password = hashedPassword;
+        user.confirmPassword = hashedPassword;
+        next();
+    }
+    catch (error) {
+        next(error);
+    }
+});
 const UserModel = model('User', userSchema);
 export default UserModel;
 //# sourceMappingURL=User.model.js.map

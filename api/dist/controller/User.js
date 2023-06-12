@@ -8,12 +8,12 @@ const createUser = async (req, res) => {
         if (password !== confirmPassword) {
             return res.status(400).send({ error: 'Passwords do not match' });
         }
-        const hashedPassword = await bcrypt.hash(password, 8); // 8 is the number of salt rounds
-        // Create a new user instance
+        // const hashedPassword = await bcrypt.hash(password, 8); // 8 is the number of salt rounds
+        // // Create a new user instance
         const newUser = new UserModel({
             email,
-            password: hashedPassword,
-            confirmPassword: hashedPassword,
+            password,
+            confirmPassword,
         });
         // Save the user to the database
         const savedUser = await newUser.save();
