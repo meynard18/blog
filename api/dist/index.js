@@ -3,7 +3,6 @@ import mongoose from 'mongoose';
 import { config } from './config/config.js';
 import userRoutes from './routes/users.js';
 import blogRoutes from './routes/blogs.js';
-import BlogModel from './model/Blog/Blog.model.js';
 const router = express();
 mongoose
     .connect(config.mongo.url)
@@ -28,13 +27,5 @@ const startServer = () => {
     router.listen(`${config.server.port}`, () => {
         console.log('Server is up and connected ' + `${config.server.port}`);
     });
-    const testBlog = async () => {
-        const blog = await BlogModel.findById('648678a5aac590dbbb447a81');
-        // await blog?.populate('author').execPopulate();
-        // console.log(blog?.author.authorId);
-        // console.log(blog?.author?.authorId);
-        // console.log(blog);
-    };
-    testBlog();
 };
 //# sourceMappingURL=index.js.map

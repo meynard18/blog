@@ -35,7 +35,7 @@ const authenticate = async (
 
       next();
    } catch (error) {
-      return res.status(401).send({ error: 'Invalid token' });
+      return res.status(401).send({ error: 'Please authenticate' });
    }
 };
 

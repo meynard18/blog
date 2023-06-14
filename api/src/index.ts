@@ -42,15 +42,4 @@ const startServer = () => {
    router.listen(`${config.server.port}`, () => {
       console.log('Server is up and connected ' + `${config.server.port}`);
    });
-
-   const testBlog = async () => {
-      const blog = await BlogModel.findById('648678a5aac590dbbb447a81');
-      // await blog?.populate('author').execPopulate();
-      // console.log(blog?.author.authorId);
-
-      // console.log(blog?.author?.authorId);
-
-      // console.log(blog);
-   };
-   testBlog();
 };

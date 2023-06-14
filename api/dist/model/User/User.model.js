@@ -39,6 +39,10 @@ userSchema.pre('save', async function (next) {
         return next();
     }
     try {
+        const existingUser = await UserModel.findOne({ email: user.email });
+        if (existingUser) {
+            return next({ status: 400, message: 'Email already exist!' });
+        }
         const hashedPassword = await bcrypt.hash(user.password, 8); // 8 is the number of salt rounds
         user.password = hashedPassword;
         user.confirmPassword = hashedPassword;
@@ -49,6 +53,5 @@ userSchema.pre('save', async function (next) {
     }
 });
 const UserModel = model('User', userSchema);
-UserModel.collection.createIndex({ email: 1 }, { unique: true });
 export default UserModel;
 //# sourceMappingURL=User.model.js.map
