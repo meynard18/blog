@@ -49,5 +49,6 @@ userSchema.pre('save', async function (next) {
     }
 });
 const UserModel = model('User', userSchema);
+UserModel.collection.createIndex({ email: 1 }, { unique: true });
 export default UserModel;
 //# sourceMappingURL=User.model.js.map

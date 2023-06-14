@@ -98,5 +98,11 @@ const logInUser = async (req, res) => {
         return res.status(500).send({ error, message: `Internal server error` });
     }
 };
-export default { createUser, readProfile, updateUser, deleteUser, logInUser };
+export default {
+    createUser,
+    readProfile,
+    updateUser,
+    deleteUser,
+    logInUser,
+};
 //# sourceMappingURL=User.js.map

@@ -56,4 +56,6 @@ userSchema.pre<User>('save', async function (next: Function) {
 
 const UserModel = model<User>('User', userSchema);
 
+UserModel.collection.createIndex({ email: 1 }, { unique: true });
+
 export default UserModel;

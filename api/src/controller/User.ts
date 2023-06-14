@@ -133,4 +133,10 @@ const logInUser = async (req: Request, res: Response) => {
    }
 };
 
-export default { createUser, readProfile, updateUser, deleteUser, logInUser };
+export default {
+   createUser,
+   readProfile,
+   updateUser,
+   deleteUser,
+   logInUser,
+};
